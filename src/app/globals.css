@@ -1,0 +1,317 @@
+@import "tailwindcss";
+
+@theme {
+  --color-bg: #050505;
+  --color-surface: rgba(20, 20, 22, 0.6);
+  --color-surface-hover: rgba(30, 30, 35, 0.8);
+  --color-border: rgba(255, 255, 255, 0.08);
+  --color-accent: #00F0FF;
+  --color-accent-light: #5CE1E6;
+  --color-text-primary: #FFFFFF;
+  --color-text-secondary: #A1A1AA;
+  --color-text-muted: #52525B;
+  --color-success: #10B981;
+  --color-warning: #F59E0B;
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, monospace;
+}
+
+/* ─── Design Tokens ─── */
+:root {
+  --bg: #050505;
+  --surface: rgba(20, 20, 22, 0.6);
+  --surface-hover: rgba(30, 30, 35, 0.8);
+  --border: rgba(255, 255, 255, 0.08);
+  --accent: #00F0FF;
+  --accent-light: #5CE1E6;
+  --text-primary: #FFFFFF;
+  --text-secondary: #A1A1AA;
+  --text-muted: #52525B;
+  --success: #10B981;
+  --warning: #F59E0B;
+
+}
+
+/* ─── Base ─── */
+a, button, [role="button"], input[type="submit"] {
+  cursor: pointer;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background-color: var(--bg);
+  color: var(--text-primary);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background-image: 
+    radial-gradient(circle at 15% 50%, rgba(0, 240, 255, 0.03), transparent 25%),
+    radial-gradient(circle at 85% 30%, rgba(139, 92, 246, 0.03), transparent 25%);
+}
+
+/* ─── Typography Scale ─── */
+.text-hero {
+  font-size: clamp(2.25rem, 7vw, 5.5rem);
+  letter-spacing: -0.04em;
+  line-height: 1.05;
+  background: linear-gradient(to bottom right, #FFFFFF, #A1A1AA);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.text-section {
+  font-size: clamp(2rem, 5vw, 3.5rem);
+  letter-spacing: -0.03em;
+  line-height: 1.1;
+}
+
+.text-body {
+  font-size: clamp(1rem, 1.5vw, 1.125rem);
+  line-height: 1.65;
+  color: var(--text-secondary);
+}
+
+.text-label {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  color: var(--accent);
+}
+
+/* ─── Noise Overlay ─── */
+.noise-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  pointer-events: none;
+  opacity: 0.03;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+}
+
+/* ─── Radial Glow ─── */
+.section-glow {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 600px;
+  background: radial-gradient(ellipse 60% 40% at 50% 0%, rgba(0, 240, 255, 0.15), transparent);
+  pointer-events: none;
+}
+
+/* ─── Navbar Glass ─── */
+.navbar-glass {
+  background: rgba(5, 5, 5, 0.6);
+  backdrop-filter: blur(24px) saturate(200%);
+  -webkit-backdrop-filter: blur(24px) saturate(200%);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+/* ─── Cards ─── */
+.card-surface {
+  background: var(--surface);
+  backdrop-filter: blur(16px);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  transition: all 400ms cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  overflow: hidden;
+}
+
+.card-surface::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(800px circle at var(--mouse-x, 50%) var(--mouse-y, 50%), rgba(255, 255, 255, 0.06), transparent 40%);
+  opacity: 0;
+  transition: opacity 400ms;
+  pointer-events: none;
+}
+
+.card-surface:hover::before {
+  opacity: 1;
+}
+
+.card-surface:hover {
+  border-color: rgba(0, 240, 255, 0.3);
+  transform: translateY(-4px);
+  box-shadow: 0 10px 40px -10px rgba(0, 240, 255, 0.1);
+}
+
+/* ─── Marquee ─── */
+@keyframes marquee {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+
+@keyframes marquee-reverse {
+  from { transform: translateX(-50%); }
+  to { transform: translateX(0); }
+}
+
+.marquee-track {
+  display: flex;
+  animation: marquee 35s linear infinite;
+  will-change: transform;
+}
+
+.marquee-track-reverse {
+  display: flex;
+  animation: marquee-reverse 30s linear infinite;
+  will-change: transform;
+}
+
+.marquee-track:hover,
+.marquee-track-reverse:hover {
+  animation-play-state: paused;
+}
+
+/* ─── Vertical Slider ─── */
+@keyframes slide-up {
+  from { transform: translateY(0); }
+  to { transform: translateY(-50%); }
+}
+
+.vertical-slider {
+  animation: slide-up 25s linear infinite;
+  will-change: transform;
+}
+
+.vertical-slider:hover {
+  animation-play-state: paused;
+}
+
+/* ─── Accordion ─── */
+.accordion-content {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 400ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.accordion-content.open {
+  max-height: 500px;
+}
+
+/* ─── Product Mockup — 3D Standing Screen ─── */
+.mockup-scene {
+  perspective: 1200px;
+  perspective-origin: 50% 40%;
+  position: relative;
+}
+
+.mockup-screen {
+  transform: rotateX(12deg) scale(0.95);
+  transform-origin: bottom center;
+  transition: transform 600ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.mockup-scene:hover .mockup-screen {
+  transform: rotateX(8deg) scale(0.97);
+}
+
+.mockup-screen .mockup-container {
+  perspective: none;
+}
+
+.mockup-image {
+  border-radius: 16px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow:
+    0 0 0 1px rgba(0, 240, 255, 0.1),
+    0 40px 80px -20px rgba(0, 0, 0, 0.8),
+    0 0 80px rgba(0, 240, 255, 0.12);
+  background: #0A0A0C;
+  transition: box-shadow 800ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.mockup-scene:hover .mockup-image {
+  box-shadow:
+    0 0 0 1px rgba(0, 240, 255, 0.2),
+    0 50px 100px -20px rgba(0, 0, 0, 0.9),
+    0 0 120px rgba(0, 240, 255, 0.18);
+}
+
+/* Floor glow — soft light beneath the screen */
+.mockup-floor-glow {
+  position: absolute;
+  bottom: 10%;
+  left: 10%;
+  right: 10%;
+  height: 120px;
+  background: radial-gradient(ellipse 70% 100% at 50% 0%, rgba(0, 240, 255, 0.08), transparent);
+  pointer-events: none;
+  filter: blur(30px);
+}
+
+/* ─── Scrollbar ─── */
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--bg);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--text-muted);
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--text-secondary);
+}
+
+/* ─── Selection ─── */
+::selection {
+  background: rgba(0, 240, 255, 0.3);
+  color: #FFF;
+}
+
+/* ─── Animated Contour Icons ─── */
+.animated-contour {
+  stroke-dasharray: 1000;
+  stroke-dashoffset: 1000;
+  animation: drawContour 3s cubic-bezier(0.4, 0, 0.2, 1) forwards infinite alternate;
+}
+
+@keyframes drawContour {
+  0% { stroke-dashoffset: 1000; }
+  100% { stroke-dashoffset: 0; }
+}
+
+/* ─── Hero Subtitle Gradient ─── */
+.hero-subtitle {
+  background: linear-gradient(90deg, #00F0FF, #A78BFA, #F472B6, #FBBF24, #00F0FF);
+  background-size: 300% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+  filter: drop-shadow(0 0 24px rgba(167, 139, 250, 0.5));
+  animation: shimmer-text 5s ease-in-out infinite;
+}
+
+@keyframes shimmer-text {
+  0%, 100% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+}
+
+/* ─── Reduced Motion ─── */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+  .marquee-track,
+  .marquee-track-reverse,
+  .vertical-slider,
+  .animated-contour {
+    animation: none !important;
+  }
+}
